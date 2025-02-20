@@ -5,6 +5,7 @@ import { CategoriesSlider } from "./_components/categories-slider";
 import { SearchInput } from "@/components/search-input";
 import { getCourses } from "@/actions/get-courses";
 import { CoursesList } from "@/components/courses-list";
+import { Suspense } from "react";
 
 interface SearchPageProps {
   searchParams: {
@@ -26,7 +27,9 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   return (
     <>
       <div className="px-6 pt-6 md:hidden block">
-        <SearchInput />
+        <Suspense>
+          <SearchInput />
+        </Suspense>
       </div>
       <div className="p-6 space-y-4">
         <CategoriesSlider categories={categories} />

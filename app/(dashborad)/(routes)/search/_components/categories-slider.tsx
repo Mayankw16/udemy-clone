@@ -12,6 +12,7 @@ import {
 import { CategoryItem } from "./category-item";
 import { Category } from "@prisma/client";
 import { IconType } from "react-icons";
+import { Suspense } from "react";
 
 const iconMap: Record<Category["name"], IconType> = {
   Music: FcMusic,
@@ -28,17 +29,20 @@ interface CategoriesSliderProps {
 }
 
 export const CategoriesSlider = ({ categories }: CategoriesSliderProps) => (
-  <div
-    style={{ scrollbarWidth: "none" }}
-    className="flex items-center gap-x-2 overflow-x-auto pb-2"
-  >
-    {categories.map((category) => (
-      <CategoryItem
-        key={category.id}
-        label={category.name}
-        value={category.id}
-        icon={iconMap[category.name]}
-      />
-    ))}
-  </div>
+  // For preventing useSearchParams error
+  <Suspense>
+    <div
+      style={{ scrollbarWidth: "none" }}
+      className="flex items-center gap-x-2 overflow-x-auto pb-2"
+    >
+      {categories.map((category) => (
+        <CategoryItem
+          key={category.id}
+          label={category.name}
+          value={category.id}
+          icon={iconMap[category.name]}
+        />
+      ))}
+    </div>
+  </Suspense>
 );
