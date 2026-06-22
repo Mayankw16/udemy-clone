@@ -36,12 +36,10 @@ export const AttachmentForm = ({
     }
   };
 
-  const onDelete = async (id: string, fileKey: string) => {
+  const onDelete = async (id: string) => {
     try {
       setDeletingId(id);
       await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
-      const res = await axios.delete(`/api/uploadthing/${fileKey}`);
-      console.log(res);
       toast.success("Attachment deleted!");
       router.refresh();
     } catch (error) {
@@ -83,9 +81,7 @@ export const AttachmentForm = ({
               {deletingId !== attachment.id && (
                 <button
                   disabled={!!deletingId}
-                  onClick={() =>
-                    onDelete(attachment.id, attachment.url.split("/").pop()!)
-                  }
+                  onClick={() => onDelete(attachment.id)}
                   className="ml-auto hover:opacity-75 transition cursor-pointer"
                 >
                   <X className="w-4 h-4" />

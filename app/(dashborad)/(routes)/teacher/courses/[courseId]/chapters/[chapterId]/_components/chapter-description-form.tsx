@@ -82,11 +82,10 @@ export const ChapterDescriptionForm = ({
         <p
           className={cn(
             "text-sm mt-2",
-            !description && "text-slate-500 italic"
+            !description && "text-slate-500 italic",
           )}
         >
-          {!description && "No description"}
-          {!!description && <Preview value={description} />}
+          {description ? <Preview value={description} /> : "No description"}
         </p>
       )}
       {isEditing && (

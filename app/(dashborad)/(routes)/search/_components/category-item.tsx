@@ -31,9 +31,8 @@ export const CategoryItem = ({
         url: pathname,
         query: { title: currentTitle, categoryId: isSelected ? null : value },
       },
-      { skipNull: true, skipEmptyString: true }
+      { skipNull: true, skipEmptyString: true },
     );
-    console.log(url);
     router.push(url);
   };
 
@@ -43,7 +42,7 @@ export const CategoryItem = ({
       onClick={onClick}
       className={cn(
         "py-2 px-3 text-sm border border-slate-200 rounded-full flex items-center gap-x-1 hover:border-purple-700 transition",
-        isSelected && "border-purple-700 bg-purple-200/20 text-purple-800"
+        isSelected && "border-purple-700 bg-purple-200/20 text-purple-800",
       )}
     >
       {Icon && <Icon size={20} />}

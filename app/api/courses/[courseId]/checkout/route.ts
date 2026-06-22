@@ -5,8 +5,8 @@ import { db } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
 
 export async function POST(
-  req: Request,
-  { params }: { params: { courseId: string } }
+  _req: Request,
+  { params }: { params: { courseId: string } },
 ) {
   try {
     const user = await currentUser();
@@ -42,6 +42,7 @@ export async function POST(
           product_data: {
             name: course.title,
             description: course.description!,
+            images: [course.imageUrl!],
           },
           unit_amount: Math.round(course.price! * 100),
         },

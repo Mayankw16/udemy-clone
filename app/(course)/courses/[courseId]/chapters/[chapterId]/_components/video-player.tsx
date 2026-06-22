@@ -38,10 +38,8 @@ export const VideoPlayer = ({
       if (completeOnEnd) {
         await axios.patch(
           `/api/courses/${courseId}/chapters/${chapterId}/progress`,
-          { isCompleted: true }
+          { isCompleted: true },
         );
-
-        console.log("NextChapterId:", nextChapterId);
 
         const res = await axios.get(`/api/courses/${courseId}/progress`);
 

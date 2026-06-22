@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 import { utapi } from "@/lib/utapi";
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { fileKey: string } }
+  _req: Request,
+  { params }: { params: { fileKey: string } },
 ) {
   try {
     const { userId } = await auth();

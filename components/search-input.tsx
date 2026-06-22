@@ -4,34 +4,32 @@ import qs from "query-string";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
+import { useDebounce } from "@/hooks/use-debounce";
 import { Input } from "./ui/input";
 
 export const SearchInput = () => {
-  const pathname = usePathname();
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [value, setValue] = useState(searchParams.get("title") || "");
+  const debounsedValue = useDebounce(value);
 
   const currentCategoryId = searchParams.get("categoryId");
 
   useEffect(() => {
-    const timemout = setTimeout(() => {
-      const url = qs.stringifyUrl(
-        {
-          url: pathname,
-          query: {
-            categoryId: currentCategoryId,
-            title: value,
-          },
+    const url = qs.stringifyUrl(
+      {
+        url: pathname,
+        query: {
+          categoryId: currentCategoryId,
+          title: debounsedValue,
         },
-        { skipEmptyString: true, skipNull: true }
-      );
-      router.push(url);
-    }, 500);
-
-    return () => clearTimeout(timemout);
-  }, [value]);
+      },
+      { skipEmptyString: true, skipNull: true },
+    );
+    router.push(url);
+  }, [debounsedValue, pathname, currentCategoryId, router]);
 
   return (
     <div className="relative">

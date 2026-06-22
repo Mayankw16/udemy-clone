@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { utapi } from "@/lib/utapi";
 import * as z from "zod";
+import { isTeacher } from "@/lib/teacher";
 
 const { video } = new Mux({
   tokenId: process.env.MUX_TOKEN_ID!,
@@ -12,12 +13,13 @@ const { video } = new Mux({
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { courseId: string; chapterId: string } }
+  { params }: { params: { courseId: string; chapterId: string } },
 ) {
   try {
     const { userId } = await auth();
 
-    if (!userId) return new NextResponse("Unauthorized!", { status: 401 });
+    if (!userId || !isTeacher(userId))
+      return new NextResponse("Unauthorized!", { status: 401 });
 
     const courseOwner = await db.course.findUnique({
       where: {
@@ -88,7 +90,7 @@ const chapterSchema = z.object({
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string; chapterId: string } }
+  { params }: { params: { courseId: string; chapterId: string } },
 ) {
   try {
     const { userId } = await auth();

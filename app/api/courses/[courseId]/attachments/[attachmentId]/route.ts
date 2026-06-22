@@ -1,15 +1,18 @@
 import { db } from "@/lib/db";
+import { isTeacher } from "@/lib/teacher";
+import { utapi } from "@/lib/utapi";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
-  req: Request,
-  { params }: { params: { courseId: string; attachmentId: string } }
+  _req: Request,
+  { params }: { params: { courseId: string; attachmentId: string } },
 ) {
   try {
     const { userId } = await auth();
 
-    if (!userId) return new NextResponse("Unauthorized!", { status: 401 });
+    if (!userId || !isTeacher(userId))
+      return new NextResponse("Unauthorized!", { status: 401 });
 
     const courseOwner = await db.course.findUnique({
       where: {
@@ -20,9 +23,12 @@ export async function DELETE(
 
     if (!courseOwner) return new NextResponse("Unauthorized!", { status: 401 });
 
-    await db.attachment.delete({
+    const attachment = await db.attachment.delete({
       where: { id: params.attachmentId, courseId: params.courseId },
     });
+
+    let attachmentKey = attachment.url.split("/").pop();
+    if (attachmentKey) await utapi.deleteFiles(attachmentKey);
 
     return new NextResponse("Attachment deleted!", { status: 200 });
   } catch (error) {

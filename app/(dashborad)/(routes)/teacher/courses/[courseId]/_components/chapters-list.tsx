@@ -33,22 +33,23 @@ export const ChaptersList = ({
     if (!result.destination) return;
 
     const items = Array.from(chapters);
+
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
     const startIndex = Math.min(result.source.index, result.destination.index);
     const endIndex = Math.max(result.source.index, result.destination.index);
 
-    const chaptersToBeReorder = items.slice(startIndex, endIndex + 1);
+    const chaptersToReorder = items.slice(startIndex, endIndex + 1);
 
     setChapters(items);
 
-    const updateData = chaptersToBeReorder.map((chapter, index) => ({
+    const updatePayload = chaptersToReorder.map((chapter, index) => ({
       id: chapter.id,
       position: startIndex + index + 1,
     }));
 
-    onReorder(updateData);
+    onReorder(updatePayload);
   };
 
   return (
@@ -69,7 +70,7 @@ export const ChaptersList = ({
                     className={cn(
                       "flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
                       chapter.isPublished &&
-                        "bg-purple-100 border-purple-200 text-purple-700"
+                        "bg-purple-100 border-purple-200 text-purple-700",
                     )}
                   >
                     <div
@@ -77,7 +78,7 @@ export const ChaptersList = ({
                       className={cn(
                         "px-2 py-3 border-r border-r-slate-200 hover:bg-slate-300 rounded-l-md transition",
                         chapter.isPublished &&
-                          "border-r-purple-200 hover:bg-purple-200"
+                          "border-r-purple-200 hover:bg-purple-200",
                       )}
                     >
                       <Grip className="w-5 h-5" />
@@ -88,7 +89,7 @@ export const ChaptersList = ({
                       <Badge
                         className={cn(
                           "bg-slate-500",
-                          chapter.isPublished && "bg-purple-700"
+                          chapter.isPublished && "bg-purple-700",
                         )}
                       >
                         {chapter.isPublished ? "Published" : "Draft"}

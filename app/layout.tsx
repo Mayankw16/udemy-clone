@@ -1,8 +1,9 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastProvider } from "@/components/providers/toast-provider";
 import { ConfettiProvider } from "@/components/providers/confetti-provider";
+
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",

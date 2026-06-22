@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        hostname: "bncvbl4s07.ufs.sh",
+      },
+      {
         hostname: "utfs.io",
       },
     ],
