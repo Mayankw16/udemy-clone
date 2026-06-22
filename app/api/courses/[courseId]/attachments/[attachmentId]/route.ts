@@ -27,7 +27,7 @@ export async function DELETE(
       where: { id: params.attachmentId, courseId: params.courseId },
     });
 
-    let attachmentKey = attachment.url.split("/").pop();
+    const attachmentKey = attachment.url.split("/").pop();
     if (attachmentKey) await utapi.deleteFiles(attachmentKey);
 
     return new NextResponse("Attachment deleted!", { status: 200 });
